@@ -19,9 +19,33 @@ def cons(l):
 name['cons'] = cons
 
 def let(l):
-    if []
+    if l[1] == '=':
+        if l[0] in let_dict:
+            return 'Error, ' + l[0] + ' already has a permanent value assigned!!'
+        elif l[0] in var_dict:
+            return 'Error, ' + l[0] + ' is a variable and cannot be assigned a permanent value!!'
+        else:
+            let_dict[l[0]]=l[2]
+    elif l[1] == ':':
+        if l[2] == 'String' | 'int' | 'double' | 'float':
+            let_dict[l[0]].type()==l[2]
 
 name['let'] = let
+
+def var(l):
+    if l[1] == '=':
+        if l[0] in var_dict:
+            var_dict[l[0]]=l[2]
+        elif l[0] in let_dict:
+            return 'Error, ' + l[0] + ' is already assigned a permanent value!!'
+        else:
+            var_dict[l[0]]=l[2]
+    elif l[1] == ':':
+        if l[2] == 'String' | 'int' | 'double' | 'float':
+            var_dict[l[0]].type()==l[2]
+
+
+name['var'] = var
 
 def concat(l):
     return l[0] + l[1]
