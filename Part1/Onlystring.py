@@ -37,7 +37,7 @@ class human(creature):
         return h
     run2 = m(1)
 
-def create_person(name, type):
+def create_creature(name, type):
     if type == 'Human' | 'human':
         ob1 = human()
         print('Printing details for a Human')
