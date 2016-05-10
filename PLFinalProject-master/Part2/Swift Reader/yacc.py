@@ -18,6 +18,9 @@ def cons(l):
 
 name['cons'] = cons
 
+def multi_func(l):
+
+
 def let(l):
     if length(l) == 3:
         if l[1] == '=':
@@ -30,9 +33,8 @@ def let(l):
         elif l[1] == ':':
             if l[2] == 'String' | 'int' | 'double' | 'float':
                 let_dict[l[0]].type()==l[2]
-    '''
     elif length(l) > 3:
-    '''
+        l=multi_func(l)
 
 name['let'] = let
 
