@@ -8,7 +8,8 @@ DEBUG = False
 # Namespace & built-in functions
 
 name = {}
-
+let_dict = {}
+var_dict = {}
 global ast
 ast = []
 
@@ -16,6 +17,11 @@ def cons(l):
     return [l[0]] + l[1]
 
 name['cons'] = cons
+
+def let(l):
+    if []
+
+name['let'] = let
 
 def concat(l):
     return l[0] + l[1]
@@ -181,13 +187,9 @@ def p_item_empty(p):
 
 def p_call(p):
     'call : LPAREN SIMB items RPAREN'
-    global ast
     if DEBUG: print "Calling", p[2], "with", p[3]
-    #if isinstance(p[3], list) and isinstance(p[3][0], list) and p[3][0][0] == "'":
-        #p[3] = [["quote"] + [p[3][0][1:]]]
-    ast = [p[2]] + [i for i in p[3]]
-    p[0] = ast
-    #p[0] = lisp_eval(p[2], p[3])
+    p[0] = lisp_eval(p[2], p[3])
+
 
 def p_atom_simbol(p):
     'atom : SIMB'
