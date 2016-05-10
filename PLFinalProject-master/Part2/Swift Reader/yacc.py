@@ -19,9 +19,58 @@ def cons(l):
 name['cons'] = cons
 
 def let(l):
-    if []
+    if length(l) == 3:
+        if l[1] == '=':
+            if l[0] in let_dict:
+                return 'Error, ' + l[0] + ' already has a permanent value assigned!!'
+            elif l[0] in var_dict:
+                return 'Error, ' + l[0] + ' is a variable and cannot be assigned a permanent value!!'
+            else:
+                let_dict[l[0]]=l[2]
+        elif l[1] == ':':
+            if l[2] == 'String' | 'int' | 'double' | 'float':
+                let_dict[l[0]].type()==l[2]
+    '''
+    elif length(l) > 3:
+    '''
 
 name['let'] = let
+
+def var(l):
+    if length(l) == 3:
+        if l[1] == '=':
+            if l[0] in var_dict:
+                var_dict[l[0]]=l[2]
+            elif l[0] in let_dict:
+                return 'Error, ' + l[0] + ' is already assigned a permanent value!!'
+            else:
+                var_dict[l[0]]=l[2]
+        elif l[1] == ':':
+            if l[2] == 'String' | 'int' | 'double' | 'float':
+                var_dict[l[0]].type()==l[2]
+
+name['var'] = var
+
+
+def swiftprint(l):
+    if length(l) == 1:
+        if l[0] in var_dict:
+            return var_dict[l[0]]
+        elif l[0] in let_dict:
+            return let_dict[l[0]]
+        else:
+            return l[0]
+    else:
+        _print(l)
+
+name['print'] = swiftprint
+
+
+def length(l):
+    l_count=0
+    for i in l:
+        l_count+=1
+    return l_count
 
 def concat(l):
     return l[0] + l[1]
@@ -79,7 +128,7 @@ name['-'] = minus
 def _print(l):
     print lisp_str(l[0])
 
-name['print'] = _print
+name['_print'] = _print
 
 #  Evaluation functions
 
@@ -87,11 +136,11 @@ def lisp_eval(simb, items):
     if simb in name:
         return call(name[simb], eval_lists(items))
     else:
-       return [simb] + items
+        return [simb] + items
 
 def call(f, l):
     try:
-        return f(eval_lists(l))  
+        return f(eval_lists(l))
     except TypeError:
         return f
 
@@ -176,7 +225,7 @@ def p_item_list(p):
 def p_item_list(p):
     'item : quoted_list'
     p[0] = p[1]
-        
+
 def p_item_call(p):
     'item : call'
     p[0] = p[1]
@@ -207,7 +256,7 @@ def p_atom_word(p):
     'atom : TEXT'
     p[0] = p[1]
 
-def p_atom_empty(p): 
+def p_atom_empty(p):
     'atom :'
     pass
 
