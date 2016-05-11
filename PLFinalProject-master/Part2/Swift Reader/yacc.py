@@ -19,39 +19,73 @@ def cons(l):
 name['cons'] = cons
 
 def multi_func(l):
+    if l[2] in let_dict:
+        l[2] = let_dict[l[2]]
+    if l[4] in let_dict:
+        l[4] = let_dict[l[4]]
+    if l[2] in var_dict:
+            l[2] = var_dict[l[2]]
+    if l[4] in var_dict:
+        l[4] = var_dict[l[4]]
+    if l[3] == '+':
+        return [l[0],l[1],l[2]+l[4]]
+    elif l[3] == '-':
+        return [l[0],l[1],l[2]-l[4]]
+    elif l[3] == '*':
+        return [l[0],l[1],l[2]*l[4]]
+    elif l[3] == '/':
+        return [l[0],l[1],l[2]/l[4]]
+
 
 
 def let(l):
-    if length(l) == 3:
+    if length(l) <= 4:
         if l[1] == '=':
             if l[0] in let_dict:
-                return 'Error, ' + l[0] + ' already has a permanent value assigned!!'
+                return l[0] + ' previously declared here'
+            elif l[0] in let_dict and let_dict[l[0]] == None:
+                let_dict[l[0]]=l[2]
             elif l[0] in var_dict:
-                return 'Error, ' + l[0] + ' is a variable and cannot be assigned a permanent value!!'
+                return l[0] + ' previously declared here'
             else:
                 let_dict[l[0]]=l[2]
-        elif l[1] == ':':
-            if l[2] == 'String' | 'int' | 'double' | 'float':
-                let_dict[l[0]].type()==l[2]
-    elif length(l) > 3:
+        elif l[1] == ':' and l[3] == '?':
+            print('optional value')
+            return optional_value(l,'let')
+    elif length(l) > 4:
+        print('multi func')
         l=multi_func(l)
+        let(l)
 
 name['let'] = let
 
 def var(l):
-    if length(l) == 3:
+    if length(l) == 4:
         if l[1] == '=':
             if l[0] in var_dict:
                 var_dict[l[0]]=l[2]
             elif l[0] in let_dict:
-                return 'Error, ' + l[0] + ' is already assigned a permanent value!!'
+                return l[0] + ' previously declared here'
             else:
                 var_dict[l[0]]=l[2]
-        elif l[1] == ':':
-            if l[2] == 'String' | 'int' | 'double' | 'float':
-                var_dict[l[0]].type()==l[2]
+        elif l[1] == ':' and l[3] == '?':
+            return optional_value(l,'var')
+    elif length(l) > 4:
+        l=multi_func(l)
+        var(l)
 
 name['var'] = var
+
+def optional_value(l,type):
+    if l[2] == 'String?' | 'Int?' | 'double?' | 'float?':
+        if type == 'var':
+            var_dict[l[0]]= None
+            var_dict[l[0]].type()==l[2]
+        elif type == 'let':
+            let_dict[l[0]]= None
+            let_dict[l[0]].type()==l[2]
+    return
+
 
 
 def swiftprint(l):
