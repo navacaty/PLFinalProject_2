@@ -50,17 +50,15 @@ def let(l):
             else:
                 let_dict[l[0]]=l[2]
         elif l[1] == ':' and l[3] == '?':
-            print('optional value')
             return optional_value(l,'let')
     elif length(l) > 4:
-        print('multi func')
         l=multi_func(l)
         let(l)
 
 name['let'] = let
 
 def var(l):
-    if length(l) == 4:
+    if length(l) <= 4:
         if l[1] == '=':
             if l[0] in var_dict:
                 var_dict[l[0]]=l[2]
